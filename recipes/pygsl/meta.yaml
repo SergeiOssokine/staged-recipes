@@ -1,0 +1,49 @@
+{% set name = "pygsl" %}
+{% set version = "2.3.3" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/pygsl-{{ version }}.tar.gz
+  sha256: 1779bce41b3cb0e370d11bf41003852ba4750c51df5b8771bb34265e8e0f1df3
+
+build:
+  skip: true  # [py<38 or win]
+  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+  host:
+    - python
+    - setuptools
+    - wheel
+    - numpy >=1.23
+    - pip
+    - gsl >=2.7
+    - swig >=4.0
+  run:
+    - python
+    - numpy >=1.23
+    - gsl >=2.7
+
+test:
+  imports:
+    - pygsl
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/pygsl/pygsl
+  summary: GNU Scientific Library Interface
+  license: GPL-2.0
+  license_file: COPYING
+
+extra:
+  recipe-maintainers:
+    - SergeiOssokine
